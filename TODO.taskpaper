@@ -1,0 +1,8 @@
+Fake Profile Pictures:
+	Add more photos:
+		- Check out the links at the end of the README
+			- Add photos for the links for which we don't have photos
+			- Remove the links for the photos we already have
+
+	- Add an example script for seeding MongoDB.
+

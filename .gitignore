@@ -1,0 +1,17 @@
+# Mac OS
+.DS_Store
+.localized
+.bundle
+
+# Windows
+Thumbs.db
+
+# vim
+*.swp
+*~
+
+# ctags
+tags
+
+# DropBox
+.dropbox
