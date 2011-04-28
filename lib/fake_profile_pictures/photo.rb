@@ -57,22 +57,55 @@ module FakeProfilePictures
       flickr_id == other.flickr_id
     end
 
+    def large2x_name
+      @large2x_name ||= "large_#{flickr_id}@2x.#{format}"
+    end
+
     def large_name
       @large_name ||= "large_#{flickr_id}.#{format}"
+    end
+
+    def square2x_name
+      @square2x_name ||= "square_#{flickr_id}@2x.#{format}"
     end
 
     def square_name
       @square_name ||= "square_#{flickr_id}.#{format}"
     end
 
-    def large_name_2x
-      @large_name_2x ||= "large_#{flickr_id}@2x.#{format}"
+    def large2x_path
+      @large2x_path ||= File.join(DIR, large2x_name)
     end
 
-    def square_name_2x
-      @square_name_2x ||= "square_#{flickr_id}@2x.#{format}"
+    def large_path
+      @large_path ||= File.join(DIR, large_name)
     end
-    
+
+    def square2x_path
+      @square2x_path ||= File.join(DIR, square2x_name)
+    end
+
+    def square_path
+      @square_path ||= File.join(DIR, square_name)
+    end
+
+    def large2x_file
+      File.new(large2x_path)      
+    end
+
+    def large_file
+      File.new(large_path)      
+    end
+
+    def square2x_file
+      File.new(square2x_path)      
+    end
+
+    def square_file
+      File.new(square_path)      
+    end
+
+    # TODO: Spec this mehtod.
     def getInfo
       uri = "#{FLICKR_URL}/services/rest/?method=flickr.photos.getInfo&photo_id=#{flickr_id}&format=json&api_key=#{FLICKR_API_KEY}"
       begin
@@ -96,11 +129,18 @@ module FakeProfilePictures
       })
       self.page_url = photo["urls"]["url"][0]["_content"]
       self.title = photo["title"]["_content"]
+      self # returns self
     end
 
     def gravity
       @gravity ||= NORTH_GRAVITY_IDS.include?(flickr_id) ?
           Magick::NorthGravity : Magick::CenterGravity
+    end
+    
+    def about
+      return @about unless @about.nil?
+      getInfo if title.nil?
+      @about = "The overlaid textual info about the person in this photo and its thumbnail was fabricated and, thus, is very unlikely to be true. This photo and its thumbnail are cropped and/or resized derivatives of \"#{title}\" by #{owner.realname} (#{owner.username}) on Flickr. License: #{license.long}. Accessed 28 Apr. 2011. #{page_url}"
     end
   end
 end
